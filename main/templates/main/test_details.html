@@ -1,0 +1,64 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}{{ test_name }}{% endblock %}
+
+{% block body %}
+    <form method="POST" id="quiz-form">
+        {% csrf_token %}
+        {% for question, options in questions_options_dict.items %}
+            {% with forloop.counter as question_number %}
+                <div class="mb-3">
+                    <p>{{ question }}</p>
+                    {% for option in options %}
+                        <div>
+                            <label>
+                                <input type="radio" name="answer_{{ question_number }}"
+                                       value="{{ option }}">
+                                {{ option }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endwith %}
+        {% endfor %}
+        <button type="button" id="check-answers-btn" class="btn btn-primary btn-lg">Проверить</button>
+    </form>
+
+    <!-- Здесь будет отображаться количество правильных ответов -->
+    <div id="results" style="display:none; margin-top: 20px;">
+        <h3>Результаты:</h3>
+        <p id="correct-answers">Правильных ответов: 0</p>
+    </div>
+
+    <!-- Кнопки для скачивания -->
+    <div class="download-buttons" style="margin-top: 30px;">
+        <a href="/download-questions/{{ test_id }}/" class="btn btn-secondary" download>Скачать вопросы</a>
+        <a href="/download-answers/{{ test_id }}/" class="btn btn-secondary" download>Скачать ответы</a>
+    </div>
+
+    <script>
+        document.getElementById('check-answers-btn').addEventListener('click', function () {
+            var form = document.getElementById('quiz-form');
+            var formData = new FormData(form);  // Собираем все данные формы
+
+            var testId = window.location.pathname.split('/')[2];  // Получаем ID из URL, например, '10'
+
+            // Добавляем ID теста в FormData
+            formData.append('test_id', testId);
+            fetch('/submit-quiz/', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())  // Получаем JSON ответ
+                .then(data => {
+                    // Отображаем результаты
+                    document.getElementById('results').style.display = 'block';
+                    document.getElementById('correct-answers').textContent = 'Правильных ответов - ' + data.correct_answers + ' из ' + data.total_questions + ' вопросов';
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        });
+
+    </script>
+{% endblock %}

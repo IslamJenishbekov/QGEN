@@ -1,0 +1,21 @@
+{%  extends 'main/layout.html' %}
+
+{% block title %}Готовые тесты{% endblock %}
+
+{% block body %}
+  <div class="d-flex justify-content-center align-items-center vh-20">
+    <h1 class="text-center">Готовые тесты</h1>
+  </div>    <div class="tests-container">
+        {% for test in tests %}
+            <div class="test-card">
+                <a href="{% url 'ready_test_detail' test.id %}" class="test-link">
+                    <h3 class="test-title">{{ test.name }}</h3>
+                    <p class="test-details">{{ test.number_questions }} вопросов</p>
+                </a>
+            </div>
+        {% empty %}
+            <p class="no-tests">Тесты отсутствуют.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+

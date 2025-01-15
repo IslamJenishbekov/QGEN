@@ -1,0 +1,49 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Про нас - QGEN{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="text-center">
+        <p class="lead mt-3">QGEN - это стартап, направленный на развитие качества оценки способностей учащихся с помощью интеллектуальных технологий. Мы создаем инструменты для быстрого и эффективного создания тестов, которые помогают педагогам и ученикам достигать лучших результатов в обучении.</p>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12 text-center">
+            <h2 class="mb-4">Наша миссия</h2>
+            <p>Мы стремимся улучшить процесс оценки знаний и навыков учащихся, предоставляя учителям удобные и эффективные инструменты для создания тестов. Наша цель - упростить этот процесс, сделать его доступным для всех, даже для тех, кто не имеет технических навыков.</p>
+        </div>
+    </div>
+
+    <div class="row mt-5 text-center">
+        <div class="col-md-12">
+            <h3>Наши ценности</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle text-success"></i> <strong>Доступность</strong>: Мы делаем наши инструменты доступными для каждого учителя.
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle text-success"></i> <strong>Эффективность</strong>: Наши тесты помогают сэкономить время и силы на подготовку, давая быстрые результаты.
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle text-success"></i> <strong>Инновации</strong>: Мы используем последние достижения в области технологий для улучшения процесса обучения.
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle text-success"></i> <strong>Поддержка</strong>: Мы всегда готовы помочь и ответить на ваши вопросы.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <h3>По вопросам и предложениям можете обратиться в нашу службу поддержки клиентов</h3>
+        <p>Мы всегда рады помочь вам! Если у вас возникли вопросы или предложения, не стесняйтесь связаться с нами:</p>
+        <p>Электронная почта: <a href="mailto:support@qgen.com">support@qgen.com</a></p>
+        <p>Телеграм: <a href="https://t.me/qgen_support" target="_blank">@qgen_support</a></p>
+        <p>Инстаграм: <a href="https://instagram.com/qgen" target="_blank">@qgen</a></p>
+        <p>Телефон: +996 (555) 111-111</p>
+        <p><a href="{% url 'support' %}">Связаться с поддержкой</a></p>
+    </div>
+</div>
+{% endblock %}
+

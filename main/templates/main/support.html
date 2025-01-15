@@ -1,0 +1,76 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Поддержка{% endblock %}
+
+{% block body %}
+<div class="support-page">
+    <h1>Поддержка</h1>
+
+    <section class="contact-info">
+        <h2>Свяжитесь с нами</h2>
+        <p>Если у вас есть вопросы, пожелания или претензии, заполните форму ниже, и мы постараемся помочь вам в кратчайшие сроки.</p>
+    </section>
+
+    <section class="feedback-form">
+        <h2>Оставьте свое сообщение</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="feedback-type">Тип обращения:</label>
+                <select id="feedback-type" name="feedback_type" required>
+                    <option value="suggestion">Пожелание</option>
+                    <option value="complaint">Претензия</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Ваш Email (для обратной связи):</label>
+                <input type="email" id="email" name="email" placeholder="example@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Сообщение:</label>
+                <textarea id="message" name="message" rows="5" placeholder="Опишите вашу проблему или пожелание..." required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="button" class="submit-button">Отправить</button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<style>
+    .support-page {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+    h1, h2 {
+        color: #333;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .submit-button {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .submit-button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}

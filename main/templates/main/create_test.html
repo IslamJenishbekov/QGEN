@@ -1,0 +1,142 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Создать тест{% endblock %}
+
+{% block body %}
+    <h1>Загрузите ваш материал</h1>
+    <form id="file-upload-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="materialFile" name="materialFile" required accept=".txt">
+        <button type="submit" class="btn btn-primary">Создать тест</button>
+    </form>
+
+    <!-- Сообщение о процессе создания теста -->
+    <div id="creating-test-message" class="mt-3" style="display: none;">
+        <p>Идет создание теста...</p>
+    </div>
+
+    <div id="response-message" class="mt-3"></div>
+
+    <!-- Блок для отображения содержимого теста -->
+    <div id="test-content" class="mt-3" style="display: none;">
+        <h3>Созданный тест:</h3>
+        <div id="test-content-display"></div>
+
+        <!-- Кнопки для скачивания файлов -->
+        <div id="download-buttons" class="mt-3">
+            <button id="download-file1" class="btn btn-success">Скачать вопросы</button>
+            <button id="download-file2" class="btn btn-success">Скачать ответы</button>
+        </div>
+
+        <!-- Поле для ввода названия теста -->
+        <div id="test-title-input" class="mt-3">
+            <label for="testTitle">Введите название теста:</label>
+            <input type="text" id="testTitle" name="testTitle" class="form-control" placeholder="Название теста"
+                   required>
+        </div>
+
+        <!-- Кнопка для сохранения теста -->
+        <div id="save-buttons" class="mt-3">
+            <button id="save_test" class="btn btn-success">Сохранить тест на платформе</button>
+        </div>
+    </div>
+
+
+    <script>
+        document.getElementById('file-upload-form').addEventListener('submit', function (event) {
+            event.preventDefault();  // Предотвращаем стандартное отправление формы
+
+            var formData = new FormData(this);  // Создаем объект FormData для отправки данных формы
+
+            document.getElementById('creating-test-message').style.display = 'block';
+
+            fetch("{% url 'create_test' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'  // Указываем, что запрос сделан через AJAX
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('creating-test-message').style.display = 'none';
+
+                    // Показываем сообщение о результате
+                    if (data.message) {
+                        document.getElementById('response-message').innerHTML = data.message;
+
+                        // Показываем содержимое теста на той же странице
+                        document.getElementById('test-content').style.display = 'block';
+                        document.getElementById('test-content-display').innerHTML = data.test_content;
+
+                        // Показываем кнопки для скачивания файлов
+                        document.getElementById('download-buttons').style.display = 'block';
+
+                        // Устанавливаем события для кнопок скачивания
+                        document.getElementById('download-file1').onclick = function () {
+                            fetch(data.file1_url)  // Загружаем файл через fetch
+                                .then(response => response.blob())  // Преобразуем ответ в Blob
+                                .then(blob => {
+                                    const link = document.createElement('a');
+                                    link.href = URL.createObjectURL(blob);  // Создаем ссылку для скачивания
+                                    link.download = 'questions.txt';  // Имя файла для скачивания
+                                    link.click();  // Имитируем клик по ссылке
+                                })
+                                .catch(error => console.error('Ошибка скачивания файла 1:', error));
+                        };
+
+                        document.getElementById('download-file2').onclick = function () {
+                            fetch(data.file2_url)  // Загружаем второй файл через fetch
+                                .then(response => response.blob())  // Преобразуем ответ в Blob
+                                .then(blob => {
+                                    const link = document.createElement('a');
+                                    link.href = URL.createObjectURL(blob);  // Создаем ссылку для скачивания
+                                    link.download = 'answers.txt';  // Имя файла для скачивания
+                                    link.click();  // Имитируем клик по ссылке
+                                })
+                                .catch(error => console.error('Ошибка скачивания файла 2:', error));
+                        };
+
+                        document.getElementById('save_test').addEventListener('click', function (event) {
+                            event.preventDefault();  // Предотвращаем перезагрузку страницы
+
+                            // Получаем значение из текстового поля
+                            const testTitle = document.getElementById('testTitle').value;
+
+                            // Проверяем, что поле не пустое
+                            if (!testTitle.trim()) {
+                                alert('Введите название теста.');
+                                return;
+                            }
+
+                            // Отправляем данные на сервер через fetch
+                            fetch("{% url 'save_test' %}", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'  // Добавляем CSRF-токен для защиты
+                                },
+                                body: JSON.stringify({title: testTitle, questions_file_path: data.questions_file_path, answers_file_path: data.answers_file_path})  // Отправляем данные в формате JSON
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        alert('Тест успешно сохранен!');
+                                    } else {
+                                        alert('Ошибка: ' + data.error);
+                                    }
+                                })
+                                .catch(error => console.error('Ошибка:', error));
+                        });
+
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    document.getElementById('creating-test-message').style.display = 'none';
+                });
+
+        });
+
+    </script>
+{% endblock %}

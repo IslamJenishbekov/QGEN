@@ -1,0 +1,63 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Главная - QGEN{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Добро пожаловать в QGEN!</h1>
+        <p class="lead mt-3">Ваш интеллектуальный помощник для создания тестов. Создавайте короткие и эффективные тесты всего за несколько минут, используя наш удобный интерфейс.</p>
+        <a href="{% url 'create_test' %}" class="btn btn-primary btn-lg mt-4">Создать тест</a>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12 text-center">
+            <h2 class="mb-4">Почему QGEN?</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle text-success"></i> <strong>Быстрое создание тестов</strong> на основе вашего материала.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle text-success"></i> <strong>Удобный интерфейс</strong>, не требующий технических навыков.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle text-success"></i> <strong>Поддержка нескольких форматов вопросов</strong> (выбор ответа, ввод текста и др.).
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-circle text-success"></i> <strong>Возможность сохранения тестов</strong> и работы с готовыми шаблонами.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <h2>Как это работает?</h2>
+        <p>Чтобы создать тест, следуйте этим простым шагам:</p>
+        <ul class="list-unstyled">
+            <li><strong>Шаг 1:</strong> Выберите материал, на основе которого хотите создать тест.</li>
+            <li><strong>Шаг 2:</strong> Создайте файл с расширением <code>.txt</code>, содержащий ваш материал.</li>
+            <li><strong>Шаг 3:</strong> Перейдите на страницу <a href="{% url 'create_test' %}">Создать тест</a> и загрузите туда свой файл.</li>
+            <li><strong>Шаг 4:</strong> На выходе вы получите два файла: один с вопросами и вариантами ответов, второй — с ответами.</li>
+        </ul>
+    </div>
+
+    <div class="row mt-5 text-center">
+        <div class="col-md-4">
+            <h3>1. Загрузите материал</h3>
+            <p>Добавьте текст, из которого нужно создать тест.</p>
+        </div>
+        <div class="col-md-4">
+            <h3>2. Сгенерируйте тест</h3>
+            <p>Система создаст вопросы на основе контента.</p>
+        </div>
+        <div class="col-md-4">
+            <h3>3. Сохраните и используйте</h3>
+            <p>Редактируйте тест и отправляйте его ученикам!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
