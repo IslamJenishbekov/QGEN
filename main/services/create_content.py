@@ -4,7 +4,7 @@ import random
 import spacy
 
 nlp = spacy.load("ru_core_news_sm")
-client = Client(api_key="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")
+client = Client(api_key="YOUR_API_KEY") # you can get it from https://console.groq.com/playground
 
 
 def read_txt_file(file_path):
